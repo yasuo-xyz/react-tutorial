@@ -8,7 +8,14 @@ import React from 'react';
 
 // 次回チェックボックスを挿入する
 const Todo = ({ todo }) => {
-  return <div>{todo.name}</div>;
+  return (
+    <div>
+      <label>
+        <input type="checkbox" checked={todo.completed} readOnly />
+      </label>
+      {todo.name}
+    </div>
+  );
 };
 
 export default Todo;
