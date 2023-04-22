@@ -29,9 +29,13 @@ function App() {
     // タスクを追加
     const name = todoNameRef.current.value;
     // setTodosの中に引数に何かしらのメソッドだったり値を入れる事によってtodosが更新される
+    // ではどのように更新したかとゆうと、prevTodosとゆうのを自前で用意した
+    // ...が3つあるのはスプレッド構文と言われてる書き方
+    // 要はオブジェクトにおけるスプレット構文の追加の方法とゆうモダンのJavaScriptの書き方
     setTodos((prevTodos) => {
       return [...prevTodos, { id: "1", name: name, completed: false }];
     });
+    todoNameRef.current.value = null;
   };
 
   // 最初のtodosはpropsと呼ばれてる名前
