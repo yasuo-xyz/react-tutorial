@@ -21,7 +21,7 @@ import Todo from './Todo';
 // export default TodoList;
 
 // 次の作業：todosの中には2つのタスクが入ってる(Todo1とTodo2)ので1つ1つ取り出していく
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos, toggleTodo }) => {
   // map関数とは、今todosには初期値としてTodo1とTodo2の文字列が入っていてその配列の中身を1つ1つ取り出していく
   // そしてその1つ1つをtodoとゆう自作の変数を用意しておいて、そのtodoをTodoのコンポーネントに渡してあげてるとゆう記述
   // このままだとmap関数に対してエラーが発生してしまう
@@ -32,7 +32,7 @@ const TodoList = ({ todos }) => {
   // キーを重複させない為には固有の番号を割り振る必要がある
   // その為にuuidライブラリ（ユニークキーのidを自動的に生成してくれる)をインポートして使ってあげると絶対に重複する事はないらしい
   // 次回uuidをイントールする
-  return todos.map((todo) => <Todo todo={todo} key={todo} />);
+  return todos.map((todo) => <Todo todo={todo} key={todo.id} toggleTodo={toggleTodo} />);
 };
 
 export default TodoList;

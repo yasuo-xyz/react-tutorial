@@ -2,6 +2,7 @@
 // useRefとゆうフックスを追加
 import { useState, useRef } from "react";
 import TodoList from "./TodoList";
+import { v4 as uuidv4 } from "uuid";
 
 // コンポーネントの中にHTNL要素を追加
 function App() {
@@ -33,9 +34,25 @@ function App() {
     // ...が3つあるのはスプレッド構文と言われてる書き方
     // 要はオブジェクトにおけるスプレット構文の追加の方法とゆうモダンのJavaScriptの書き方
     setTodos((prevTodos) => {
-      return [...prevTodos, { id: "1", name: name, completed: false }];
+      return [...prevTodos, { id: uuidv4(), name: name, completed: false }];
     });
     todoNameRef.current.value = null;
+  };
+
+  // チェックボックスに完了か未完了かのチェックマークを付ける
+  // ()の中のidの部分はどののタスクを指定するのかのどの、の部分の役割の意味
+  const toggleTodo = (id) => {
+    // 何をしているのかとゆうとコピーをしている
+    // todosとゆう中のオブジェクトをnewTodosに1回コピーしてる
+    // 何故コピーしないといけないのかとゆうと、todosとゆうのが状態変数で管理されていて直接触るのはよろしくないから
+    // 直接値を変える事は好ましくないのでなのでまずnewTodosとゆう形でコピーしてあげる
+    const newTodos = [...todos];
+    // 何をしているのかとゆうとfind関数とゆうのはmap関数とちょっと似ている
+    // map関数とゆうのは1つ1つ取り出す役割
+    // find関数は何かを見つける
+    const todo = newTodos.find((todo) => todo.id === id);
+    todo.completed = !todo.completed;
+    setTodos(newTodos);
   };
 
   // 最初のtodosはpropsと呼ばれてる名前
@@ -44,7 +61,7 @@ function App() {
   // propsでTodoListに値を渡す事が出来る
   return (
     <>
-      <TodoList todos={todos} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} />
       {/* input属性に対してrefとゆうプロパティを追加 */}
       {/* どうゆう事をやっているのか？ */}
       {/* input属性は文字列を打ち込みます */}
