@@ -20,15 +20,15 @@ function App() {
   // setTodosとは、例えばtodosの中身を更新、追加、削除したい時にsetTodosとゆうset関数を使う事によって
   // todosの中身を更新、追加、削除したり出来るのがsetTodosの役割になる
 
-  const [todos, setTodos] = useState([
-    { id: 1, name: "Todo1", completed: false },
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const todoNameRef = useRef();
 
   const handleAddTodo = () => {
     // タスクを追加
     const name = todoNameRef.current.value;
+    // テキストボックスが空白の状態の時にタスクを追加押しても追加されないように実装している
+    if (name === "") return;
     // setTodosの中に引数に何かしらのメソッドだったり値を入れる事によってtodosが更新される
     // ではどのように更新したかとゆうと、prevTodosとゆうのを自前で用意した
     // ...が3つあるのはスプレッド構文と言われてる書き方
@@ -49,9 +49,15 @@ function App() {
     const newTodos = [...todos];
     // 何をしているのかとゆうとfind関数とゆうのはmap関数とちょっと似ている
     // map関数とゆうのは1つ1つ取り出す役割
-    // find関数は何かを見つける
+    // find関数は何かを見つける、条件式がtrueであればそのtrueになったものだけを変数の中に入れる
     const todo = newTodos.find((todo) => todo.id === id);
     todo.completed = !todo.completed;
+    setTodos(newTodos);
+  };
+
+  // チェックマークが付いてるタスクを削除するのを実装している
+  const handleClear = () => {
+    const newTodos = todos.filter((todo) => !todo.completed);
     setTodos(newTodos);
   };
 
@@ -71,8 +77,10 @@ function App() {
       <input type="text" ref={todoNameRef} />
       {/* タスクを追加出来るようにする */}
       <button onClick={handleAddTodo}>タスクを追加</button>
-      <button>完了したタスクの削除</button>
-      <div>残りのタスク:0</div>
+      <button onClick={handleClear} >完了したタスクの削除</button>
+      {/* チェックマークが付いていないのをカウントするのを実装 */}
+      {/* filter関数とは、条件式がfalseであればそのfalseになったものだけを変数の中に入れるとゆうmap関数の逆バージョン */}
+      <div>残りのタスク:{todos.filter((todo) => !todo.completed).length}</div>
     </>
   );
 }
